@@ -21,7 +21,6 @@ This means that you cannot simply drag the `index.html` file onto your browser t
 
 Assuming you have [Node.js] and [npm] installed:
 
-```sh
 # install the npm "serve" module globally
 sudo npm install -g serve
 

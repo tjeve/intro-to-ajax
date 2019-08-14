@@ -26,10 +26,12 @@
   // Below is our jumbotron example from the previous tab done using jQuery's $.load() method:
   //
 
-  $('#loadBtn2').click(clickBtn)
+  var btn = document.getElementById("loadBtn2");
+
+  $('#loadBtn2').click(clickBtn) //when the #loadBtn2 button is clicked, run clickBtn
 
   function clickBtn () {
-    $('#jumbotronContainer2').load('jumbotron.html')
+    $('#jumbotronContainer2').load('jumbotron.html') //loaded jumbotron.html from server and placed in element
     $('#loadBtn2').remove()
   }
 
@@ -71,7 +73,41 @@
   //
 
   // TODO: your code goes here :)
+ 
+  function handlePromise(response) { //This function handles the promise that comes back from the server
+    // console.log(response)
+    $("#doggoContainer").html(`<img id="doggoPic" src="${response.message}">`) // .load is not the function that I want to use. Find another.
+  }
 
+
+  $("#generateDoggoBtn").click(clickBtn2)
+
+function clickBtn2 () {
+  console.log("1");
+  var dogPicObject = $.get("https://dog.ceo/api/breeds/image/random"); // gets information (a promise) from the server
+  dogPicObject.then(handlePromise);  //when promise is returned THEN run the handlePromise function on it.
+
+ $("#generateDoggoBtn").html('Generating Doggo ...') // changes text when clicked
+
+  
+  $("#generateDoggoBtn").prop("disabled", true); //.attr or .prop can be used here to change attributes of the properties
+
+  function handlePromise(response) { //This function takes the promise, an object, that comes back from the server and then renders it
+    console.log("2");
+    $("#doggoContainer").html(`<img id="doggoPic" src="${response.message}">`) // .load is not the function that I want to use. Find another.
+  
+    console.log("3");// Line 100 and 101 have to occur inside this function because they're asynchronous so its the only way to make sure
+                    // happens after the html is replaced.
+    $("#generateDoggoBtn").html('Generate Doggo'); //changes the button text back to "Generate Doggo"
+    $("#generateDoggoBtn").prop("disabled", false); 
+
+
+  }
+
+
+
+
+}
   //
   // Cool. Now let's kick it up a notch and allow selecting a specific breed of dog!
   //

@@ -9,3 +9,8 @@ h1 {
 #jumbotronContainer {
   margin-top: 20px;
 }
+
+#doggoPic {
+  padding-top: 20px;
+  width: 500px;
+}
