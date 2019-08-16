@@ -83,27 +83,27 @@
   $("#generateDoggoBtn").click(clickBtn2)
 
 function clickBtn2 () {
-  console.log("1");
-  var dogPicObject = $.get("https://dog.ceo/api/breeds/image/random"); // gets information (a promise) from the server
-  dogPicObject.then(handlePromise);  //when promise is returned THEN run the handlePromise function on it.
+  
+  var dogPicObject = $.getJSON("https://dog.ceo/api/breeds/image/random"); // gets information (a promise) from the server. dogPicObject is the promise
+  // .get() and .getJSON both work for this function. It's just grabbing data.
+  dogPicObject.then(handlePromise);  //when the promise is returned THEN run the handlePromise function on it.
 
  $("#generateDoggoBtn").html('Generating Doggo ...') // changes text when clicked
 
   
-  $("#generateDoggoBtn").prop("disabled", true); //.attr or .prop can be used here to change attributes of the properties
+  $("#generateDoggoBtn").prop("disabled", true); //.attr or .prop can be used here to change attributes of the properties. .prop is newer
 
   function handlePromise(response) { //This function takes the promise, an object, that comes back from the server and then renders it
-    console.log("2");
+         //It takes in a javascript object and returns a string
     $("#doggoContainer").html(`<img id="doggoPic" src="${response.message}">`) // .load is not the function that I want to use. Find another.
   
-    console.log("3");// Line 100 and 101 have to occur inside this function because they're asynchronous so its the only way to make sure
-                    // happens after the html is replaced.
     $("#generateDoggoBtn").html('Generate Doggo'); //changes the button text back to "Generate Doggo"
-    $("#generateDoggoBtn").prop("disabled", false); 
+    $("#generateDoggoBtn").prop("disabled", false); // renables the button.
 
-
+    
+    // There is a method you could call, a listener that you could use to enable the button once it is fully loaded.
+    // If you can't find the right event, it exists you just couldn't find it.
   }
-
 
 
 
@@ -142,8 +142,43 @@ function clickBtn2 () {
   //    You should now be able to view random pictures of specific dog breeds via the menu!
   //
 
-  // TODO: your code goes here :)
+  function handleDogBreedList(list) { // inserts html made from promise into select menu 
+      function createBreedHTML (breedList) {   // Turns breedList into HTML for select menu
+        return `${breedList}`
+      }
+      
+      let breedListHTML = list.message.map(createBreedHTML).join('')
+      // console.log(breedListHTML)
+      return breedListHTML
+  }
 
+  // $(document).ready(function() {
+  //   console.log("page is ready");
+  // })
+
+  // TODO: your code goes here :)
+  $("#selectBreedContainer").click(clickDrop)
+
+function clickDrop () {
+  
+  var dogBreedList = jQuery.ajax({  // Requests Data 
+    url: "https://dog.ceo/api/breeds/list",
+    error: function() {console.log("Sorry, The Menu is not Available")}
+  })
+  
+  dogBreedList.then(handleDogBreedList);  //When promise is returned run handleDogBreedList (line 145)
+
+
+  $("#select-breed").on("change", $.get(`https://dog.ceo/api/breed/${}/images/random`)) //this needs some reworking
+
+  // dogBreedList.ready(openDropdown)
+
+  // console.log(dogBreedList);
+
+  // function openDropdown (breedList) { 
+  //   $("#select-breed").on("click", )
+  // }
+} 
   //
   // Excellent work!
   //
