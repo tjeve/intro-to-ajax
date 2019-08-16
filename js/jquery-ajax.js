@@ -144,41 +144,29 @@ function clickBtn2 () {
 
   function handleDogBreedList(list) { // inserts html made from promise into select menu 
       function createBreedHTML (breedList) {   // Turns breedList into HTML for select menu
-        return `${breedList}`
+        return `<option value="${breedList}">${breedList}</option>`
       }
       
-      let breedListHTML = list.message.map(createBreedHTML).join('')
+      let breedListHTML = list.message.map(createBreedHTML)
       // console.log(breedListHTML)
-      return breedListHTML
+      return $("#select-breed").html(breedListHTML)
   }
-
-  // $(document).ready(function() {
-  //   console.log("page is ready");
-  // })
-
-  // TODO: your code goes here :)
-  $("#selectBreedContainer").click(clickDrop)
-
-function clickDrop () {
+ 
+  $(document).ready( function() {  //When the dom is loaded execute the function
+    var dogBreedList = jQuery.ajax({  // Requests Data 
+      url: "https://dog.ceo/api/breeds/list",
+      error: function() {console.log("Sorry, The Menu is not Available")}
+    })
+    
+    dogBreedList.then(handleDogBreedList);  // When promise is returned run handleDogBreedList (line 145)
+    
+    let breedMenu = document.getElementById('select-breed')
+    console.log(breedMenu.options)
+    // I need to select the value of the dropdown menu and insert it below
+    $("#select-breed").on("change", $.get(`https://dog.ceo/api/breed/${}/images/random`)) // <-- Figure out what goes in here
   
-  var dogBreedList = jQuery.ajax({  // Requests Data 
-    url: "https://dog.ceo/api/breeds/list",
-    error: function() {console.log("Sorry, The Menu is not Available")}
   })
-  
-  dogBreedList.then(handleDogBreedList);  //When promise is returned run handleDogBreedList (line 145)
 
-
-  $("#select-breed").on("change", $.get(`https://dog.ceo/api/breed/${}/images/random`)) //this needs some reworking
-
-  // dogBreedList.ready(openDropdown)
-
-  // console.log(dogBreedList);
-
-  // function openDropdown (breedList) { 
-  //   $("#select-breed").on("click", )
-  // }
-} 
   //
   // Excellent work!
   //
